@@ -1,0 +1,2 @@
+select f.FLIGHT_NUM, f.DEPART_TIME, f.DURATION from FLTRESV f, XMLTABLE('$r/fltresv/request' passing f.REQUEST as "r"
+columns agent_name varchar2(50) path 'agentname') r where f.SEASONAL=0 and r.agent_name='Tee Adventures';

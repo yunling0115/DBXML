@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<!-- Simple Types -->
+	<xs:simpleType name="flightnumberType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^0]\d{2,3}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timeType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{1,2}:\d{2}:\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dateType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{4}-\d{2}-\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="phoneType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{3}-[a-zA-Z0-9]{3}-[a-zA-Z0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Complex Types -->
+	<!-- Contact Person -->
+	<xs:complexType name="contactpersonType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="phone" type="phoneType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Reservation -->
+	<xs:complexType name="reservationType">
+		<xs:sequence>
+			<!-- question -->
+			<xs:element name="flightno" type="flightnumberType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="traveldate" type="dateType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="numberofseats" type="xs:positiveInteger" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Flight -->
+	<xs:complexType name="flightType">
+		<xs:sequence>
+			<xs:element name="flightnumber" type="flightnumberType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="departuretime" type="timeType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="duration" type="xs:positiveInteger" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="capacity" type="xs:positiveInteger" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="seasonal" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="origin"/>
+			<xs:element name="destination"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Request -->
+	<xs:complexType name="requestType">
+		<xs:sequence>
+			<xs:element name="agentname" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="requestdate" type="dateType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="contactperson" type="contactpersonType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="reservation" type="reservationType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Root -->
+	<xs:complexType name="fltresvType">
+		<xs:sequence>
+			<xs:element name="flight" type="flightType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="request" type="requestType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Root Element -->
+	<xs:element name="fltresv" type="fltresvType"/>
+</xs:schema>
